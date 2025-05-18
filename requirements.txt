@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+matplotlib
+seaborn
+smolagents
+python-dotenv
+transformers
+huggingface-hub
+dronekit
+pymavlink
