@@ -6,15 +6,18 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # This is important to allow pushing to the repo
     steps:
       - name: Checkout GitHub repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetch all history for proper syncing
+          token: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token
       - name: Configure Git
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Add Hugging Face remote
         run: |
           git remote add hf https://huggingface.co/spaces/evangelosmeklis/deepdrone
@@ -22,6 +25,7 @@ jobs:
       - name: Sync from Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Update remote URL with token for authentication
           git remote set-url hf https://$HF_TOKEN@huggingface.co/spaces/evangelosmeklis/deepdrone
@@ -32,7 +36,7 @@ jobs:
           if [ "$HF_LATEST" != "$GH_LATEST" ]; then
             echo "New changes detected in Hugging Face repository"
             git reset --hard hf/main
-            git push origin main
+            git push https://x-access-token:${GH_TOKEN}@github.com/evangelosmeklis/deepdrone.git main
           else
             echo "No new changes to sync"
           fi
