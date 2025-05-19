@@ -1,17 +1,15 @@
----
-title: DeepDrone
-emoji: 🚁
-colorFrom: green
-colorTo: green
-sdk: streamlit
-sdk_version: 1.41.1
-app_file: main.py
-pinned: false
----
-
 # DeepDrone
 
 A drone chat agent for drone analytics and operations, built on the smolagents framework with DroneKit integration for real drone control.
+
+![DeepDrone Interface](media/att.1mxvX7ixOaRuDewek4Lq6JseIxapLkfUqn9ZLDUTCWk.png)
+![DeepDrone Visualization](media/att.pVXoULsfT5UF13gBL3MU8gcmuYMqnwBcizz2dhry8D4.png)
+
+## Hugging Face
+This repo is hosted in a huggingface space here: 
+I will regularely update it on github with the changes there
+
+https://huggingface.co/spaces/evangelosmeklis/deepdrone
 
 ## Features
 
