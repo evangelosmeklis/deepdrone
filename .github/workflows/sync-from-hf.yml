@@ -1,10 +1,8 @@
 name: Sync from Hugging Face
-
 on:
   schedule:
     - cron: "0 * * * *"  # Run every hour
   workflow_dispatch:  # Allow manual triggering
-
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -13,23 +11,24 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetch all history for proper syncing
-
       - name: Configure Git
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-
       - name: Add Hugging Face remote
         run: |
           git remote add hf https://huggingface.co/spaces/evangelosmeklis/deepdrone
           git fetch hf
-
       - name: Sync from Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
+          # Update remote URL with token for authentication
+          git remote set-url hf https://$HF_TOKEN@huggingface.co/spaces/evangelosmeklis/deepdrone
+          git fetch hf
           # Get the latest commit from Hugging Face
           HF_LATEST=$(git rev-parse hf/main)
           GH_LATEST=$(git rev-parse origin/main)
-          
           if [ "$HF_LATEST" != "$GH_LATEST" ]; then
             echo "New changes detected in Hugging Face repository"
             git reset --hard hf/main
