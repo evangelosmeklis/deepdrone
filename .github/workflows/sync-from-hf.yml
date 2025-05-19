@@ -36,7 +36,7 @@ jobs:
           if [ "$HF_LATEST" != "$GH_LATEST" ]; then
             echo "New changes detected in Hugging Face repository"
             git reset --hard hf/main
-            git push https://x-access-token:${GH_TOKEN}@github.com/evangelosmeklis/deepdrone.git main
+            git push --force https://x-access-token:${GH_TOKEN}@github.com/evangelosmeklis/deepdrone.git main
           else
             echo "No new changes to sync"
           fi
