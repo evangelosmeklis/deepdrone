@@ -9,6 +9,11 @@ app_file: main.py
 pinned: false
 ---
 
+<div align="center">
+  <img src="media/att.1mxvX7ixOaRuDewek4Lq6JseIxapLkfUqn9ZLDUTCWk.png" alt="DeepDrone Interface" width="600"/>
+  <img src="media/att.pVXoULsfT5UF13gBL3MU8gcmuYMqnwBcizz2dhry8D4.png" alt="DeepDrone Visualization" width="600"/>
+</div>
+
 # DeepDrone
 
 A drone chat agent for drone analytics and operations, built on the smolagents framework with DroneKit integration for real drone control.
@@ -109,3 +114,4 @@ IMPORTANT: Always follow safety guidelines when operating real drones.
 - DroneKit-Python for real drone control
 - Streamlit for the user interface
 - Pandas, Matplotlib and Seaborn for data analysis and visualization
+# Last updated: Mon May 19 11:57:14 EEST 2025
