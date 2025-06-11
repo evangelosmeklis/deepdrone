@@ -52,7 +52,7 @@ jobs:
             git add .github
             git commit -m "ci: preserve GitHub workflows during sync"
             # Push all changes to GitHub
-            git push https://x-access-token:${GH_TOKEN}@github.com/evangelosmeklis/deepdrone.git main
+            git push --force https://x-access-token:${GH_TOKEN}@github.com/evangelosmeklis/deepdrone.git main
           else
             echo "No new changes to sync"
-          fi
+          fi 
