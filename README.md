@@ -97,5 +97,3 @@ Once connected, you can control the drone with commands like:
 -   **DroneKit-Python** for real drone control.
 -   **Streamlit** for the user interface.
 -   **Pandas, Matplotlib, and Seaborn** for data analysis and visualization.
-
-# Last updated: Mon May 19 11:57:14 EEST 2025
