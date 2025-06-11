@@ -16,15 +16,15 @@ pinned: false
 
 # DeepDrone
 
-A drone chat agent for drone analytics and operations, built on the smolagents framework with DroneKit integration for real drone control.
+A drone chat agent for drone analytics and operations, built on the smolagents framework with DroneKit integration for real drone control. It uses the DeepSeek API for natural language understanding and mission generation.
 
 ## Features
 
-- **Drone Chat**: Interact with a drone assistant through a chat interface
-- **Visualizations**: Generate flight paths and sensor readings visualizations
-- **Maintenance Recommendations**: Get maintenance suggestions based on flight hours
-- **Mission Planning**: Generate mission plans for various drone operations
-- **Real Drone Control**: Connect to and control real drones using DroneKit
+- **Drone Chat**: Interact with a drone assistant through a chat interface powered by DeepSeek.
+- **Visualizations**: Generate flight paths and sensor readings visualizations.
+- **Maintenance Recommendations**: Get maintenance suggestions based on flight hours.
+- **Mission Planning**: Generate mission plans for various drone operations.
+- **Real Drone Control**: Connect to and control real drones using DroneKit.
   - Take off and land
   - Navigate to GPS coordinates
   - Return to home
@@ -33,64 +33,47 @@ A drone chat agent for drone analytics and operations, built on the smolagents f
 
 ## Getting Started
 
-1. Clone this repository
-2. Copy `.env-example` to `.env` and add your Hugging Face API token
-3. Install dependencies: `pip install -r requirements.txt`
-4. **For Python 3.10+ users**: Run the compatibility patch: `python dronekit_patch.py`
-5. Run the application: `streamlit run main.py`
+1.  **Clone the repository**:
+    ```bash
+    git clone <repository-url>
+    cd deepdrone
+    ```
+2.  **Install dependencies**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+3.  **Set up your API Key**:
+    Create a file named `.env` in the root of the project and add your DeepSeek API key:
+    ```
+    DEEPSEEK_API_KEY=your_deepseek_api_key
+    ```
+4.  **Run the application**:
+    ```bash
+    streamlit run main.py
+    ```
 
 ## Using DroneKit Integration
 
 The DroneKit integration allows you to control drones running ArduPilot or PX4 firmware.
 
-### Python 3.10+ Compatibility
-
-If you're using Python 3.10 or newer, you need to run the patch script before using DroneKit:
-
-```
-python dronekit_patch.py
-```
-
-This script fixes the "AttributeError: module 'collections' has no attribute 'MutableMapping'" error by patching the DroneKit library to use collections.abc instead of collections.
-
 ### Simulation
 
-To test the drone control features in simulation:
+To test the drone control features in a simulated environment:
 
-1. Install ArduPilot SITL simulator (follow instructions at https://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html)
-2. Start a simulated drone: `sim_vehicle.py -v ArduCopter --console --map`
-3. Run the example script: `python drone_example.py`
-
-**Note**: The simulator must be running before you attempt to connect with DeepDrone.
+1.  Install the ArduPilot SITL simulator (follow instructions at the [ArduPilot dev guide](https://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html)).
+2.  Start a simulated drone: `sim_vehicle.py -v ArduCopter --console --map`
+3.  Connect to the simulator from the DeepDrone chat interface by typing: `Connect to simulator` or `connect_to_real_drone('udp:127.0.0.1:14550')`.
 
 ### Real Drone Connection
 
 To connect to a real drone:
 
-1. Ensure your drone is running ArduPilot or PX4 firmware
-2. Connect using one of these methods:
-
-   #### Via Terminal
-   
-   ```
-   # For direct USB connection
-   python drone_example.py --connect /dev/ttyACM0  # Linux
-   python drone_example.py --connect COM3  # Windows
-   
-   # For WiFi/Network connection
-   python drone_example.py --connect tcp:192.168.1.1:5760
-   
-   # For telemetry radio connection
-   python drone_example.py --connect /dev/ttyUSB0
-   ```
-
-   #### Via Chat Interface
-   
-   Use natural language commands in the DeepDrone chat:
-   
-   - "Connect to drone at tcp:192.168.1.1:5760"
-   - "Connect to drone using USB at /dev/ttyACM0"
-   - "Connect to drone via telemetry at /dev/ttyUSB0"
+1.  Ensure your drone is running ArduPilot or PX4 firmware.
+2.  Connect your drone to your computer.
+3.  Use natural language commands in the DeepDrone chat interface. For example:
+    - "Connect to drone at `tcp:192.168.1.1:5760`"
+    - "Connect to drone using USB at `/dev/ttyACM0`" (for Linux)
+    - "Connect to the drone at `COM4`" (for Windows)
 
 Once connected, you can control the drone with commands like:
 - "Take off to 10 meters"
@@ -100,18 +83,19 @@ Once connected, you can control the drone with commands like:
 
 ### Troubleshooting
 
-- **collections.MutableMapping error**: Run `python dronekit_patch.py` to fix the DroneKit library for Python 3.10+
-- **Connection refused error**: Ensure the drone or simulator is powered on and the connection string is correct
-- **Import errors**: Verify that DroneKit and PyMAVLink are installed (run `pip install dronekit pymavlink`)
-- **Permission errors**: For USB connections on Linux, you may need to add your user to the 'dialout' group or use `sudo`
+-   **`collections.MutableMapping` error**: If you encounter this error, especially on Python 3.10+, run the included patch script: `python dronekit_patch.py`. This script resolves a compatibility issue in the DroneKit library.
+-   **Connection refused error**: Ensure the drone or simulator is powered on and the connection string is correct.
+-   **Import errors**: Verify that all dependencies are installed by running `pip install -r requirements.txt`.
+-   **Permission errors**: For USB connections on Linux, you may need to add your user to the `dialout` group (`sudo usermod -a -G dialout $USER`) or use `sudo` to run the application.
 
-IMPORTANT: Always follow safety guidelines when operating real drones.
+**IMPORTANT**: Always follow safety guidelines when operating real drones.
 
 ## Tech Stack
 
-- smolagents for agent functionality
-- Hugging Face's Qwen2.5-Coder model for natural language understanding
-- DroneKit-Python for real drone control
-- Streamlit for the user interface
-- Pandas, Matplotlib and Seaborn for data analysis and visualization
+-   **smolagents** for agent functionality.
+-   **DeepSeek API** (`deepseek-reasoner` model) for natural language understanding and code generation.
+-   **DroneKit-Python** for real drone control.
+-   **Streamlit** for the user interface.
+-   **Pandas, Matplotlib, and Seaborn** for data analysis and visualization.
+
 # Last updated: Mon May 19 11:57:14 EEST 2025
