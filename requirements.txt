@@ -5,7 +5,6 @@ matplotlib
 seaborn
 smolagents
 python-dotenv
-transformers
-huggingface-hub
+openai
 dronekit
 pymavlink

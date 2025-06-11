@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import io
 import base64
-from .hf_model import HfApiModel
+from .deepseek_model import DeepSeekModel
 import time
 import datetime
 import logging
@@ -792,24 +792,24 @@ def disconnect_from_drone() -> str:
         update_mission_status("ERROR", f"Disconnect error: {str(e)}")
         return f"Error disconnecting from drone: {str(e)}"
 
-def create_qwen_model():
-    """Create a QwenCoder model instance"""
-    # Check if HF_TOKEN is set in environment variables
-    hf_token = os.environ.get("HF_TOKEN", "")
-    if not hf_token:
-        st.error("Hugging Face API token not found. Please set the HF_TOKEN environment variable.")
+def create_deepseek_model():
+    """Create a DeepSeek model instance"""
+    # Check if DEEPSEEK_API_KEY is set in environment variables
+    deepseek_api_key = os.environ.get("DEEPSEEK_API_KEY", "")
+    if not deepseek_api_key:
+        st.error("DeepSeek API key not found. Please set the DEEPSEEK_API_KEY environment variable.")
         # Return a placeholder model that returns a fixed response
         class PlaceholderModel:
             def __call__(self, *args, **kwargs):
-                from .hf_model import Message
-                return Message("Authentication error: No Hugging Face API token provided. Please set an API token to use this feature.")
+                from .deepseek_model import Message
+                return Message("Authentication error: No DeepSeek API key provided. Please set an API key to use this feature.")
         return PlaceholderModel()
     
     # Use the token from the environment variable
-    return HfApiModel(
+    return DeepSeekModel(
         max_tokens=2096,
         temperature=0.5,
-        model_id='Qwen/Qwen2.5-Coder-32B-Instruct'
+        model_id='deepseek-reasoner'
     )
 
 def display_message(role, content, avatar_map=None):
@@ -1085,7 +1085,7 @@ def main():
     
     # Initialize session state for drone assistant and other needed state
     if 'drone_agent' not in st.session_state:
-        model = create_qwen_model()
+        model = create_deepseek_model()
         st.session_state['drone_agent'] = DroneAssistant(
             tools=[
                 # Data analysis tools
