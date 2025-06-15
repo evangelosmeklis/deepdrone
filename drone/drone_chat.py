@@ -909,42 +909,47 @@ def main():
     
     /* Dark background for the entire app */
     .stApp {
-        background-color: #000000 !important;
-        color: #00ff00 !important;
+        background-color: #0a1929 !important;
+        color: #00ffff !important;
         margin: 0 !important;
+        font-family: 'Orbitron', sans-serif !important;
     }
     
     /* Dark background for main content */
     .main .block-container {
-        background-color: #000000 !important;
+        background-color: #0a1929 !important;
     }
     
     /* Dark styling for sidebar */
     [data-testid="stSidebar"] {
-        background-color: #0A0A0A !important;
-        border-right: 1px solid #00ff00 !important;
+        background-color: rgba(10, 25, 41, 0.9) !important;
+        border-right: 1px solid #00ffff !important;
+        backdrop-filter: blur(10px);
     }
     
     /* Dark styling for all inputs */
     .stTextInput > div {
-        background-color: #1E1E1E !important;
-        color: #00ff00 !important;
-        border: 1px solid #00ff00 !important;
+        background-color: rgba(10, 25, 41, 0.9) !important;
+        color: #00ffff !important;
+        border: 1px solid #00ffff !important;
+        border-radius: 5px !important;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.2) !important;
     }
     
     .stTextInput input {
-        color: #00ff00 !important;
-        background-color: #1E1E1E !important;
+        color: #00ffff !important;
+        background-color: rgba(10, 25, 41, 0.9) !important;
+        font-family: 'Orbitron', sans-serif !important;
     }
     
     .stTextInput input::placeholder {
-        color: #00aa00 !important;
-        opacity: 0.7 !important;
+        color: rgba(0, 255, 255, 0.5) !important;
     }
     
     /* Override all Streamlit default styling */
     h1, h2, h3, h4, h5, h6, p, div, span, label {
-        color: #00ff00 !important;
+        color: #00ffff !important;
+        font-family: 'Orbitron', sans-serif !important;
     }
 
     /* Command bar fixed at bottom */
@@ -953,11 +958,12 @@ def main():
         bottom: 0 !important;
         left: 0 !important;
         right: 0 !important;
-        background-color: #0A0A0A !important;
-        border-top: 2px solid #00ff00 !important;
+        background-color: rgba(10, 25, 41, 0.9) !important;
+        border-top: 2px solid #00ffff !important;
         padding: 10px !important;
         z-index: 9999 !important;
         width: 100% !important;
+        backdrop-filter: blur(10px);
     }
     
     /* Chat container */
@@ -967,40 +973,48 @@ def main():
         overflow-y: auto !important;
         padding: 15px !important;
         margin-bottom: 30px !important;
-        background-color: transparent !important;
-        border: 1px solid #00ff00;
-        border-radius: 5px;
+        background-color: rgba(10, 25, 41, 0.9) !important;
+        border: 1px solid #00ffff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
         display: flex !important;
         flex-direction: column !important;
+        backdrop-filter: blur(10px);
     }
     
     /* Override button styling */
     button[kind="secondaryFormSubmit"] {
-        background-color: #0A0A0A !important;
-        color: #00ff00 !important;
-        border: 1px solid #00ff00 !important;
-        border-radius: 2px !important;
-        font-family: "Courier New", monospace !important;
+        background-color: rgba(10, 25, 41, 0.9) !important;
+        color: #00ffff !important;
+        border: 1px solid #00ffff !important;
+        border-radius: 5px !important;
+        font-family: 'Orbitron', sans-serif !important;
         font-weight: bold !important;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.2) !important;
+        transition: all 0.3s ease !important;
     }
     
     button[kind="secondaryFormSubmit"]:hover {
-        background-color: #00ff00 !important;
-        color: #000000 !important;
+        background-color: #00ffff !important;
+        color: #0a1929 !important;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.4) !important;
     }
     
     .stButton > button {
-        background-color: #0A0A0A !important;
-        color: #00ff00 !important;
-        border: 1px solid #00ff00 !important;
-        border-radius: 2px !important;
-        font-family: "Courier New", monospace !important;
+        background-color: rgba(10, 25, 41, 0.9) !important;
+        color: #00ffff !important;
+        border: 1px solid #00ffff !important;
+        border-radius: 5px !important;
+        font-family: 'Orbitron', sans-serif !important;
         font-weight: bold !important;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.2) !important;
+        transition: all 0.3s ease !important;
     }
     
     .stButton > button:hover {
-        background-color: #00ff00 !important;
-        color: #000000 !important;
+        background-color: #00ffff !important;
+        color: #0a1929 !important;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.4) !important;
     }
     
     /* Hide Streamlit's default footer */
@@ -1009,53 +1023,54 @@ def main():
         display: none !important;
     }
     
-    /* Terminal-like text styling */
-    .terminal-text {
-        font-family: "Courier New", monospace !important;
-        color: #00ff00 !important;
+    /* Futuristic text styling */
+    .futuristic-text {
+        font-family: "Orbitron", sans-serif !important;
+        color: #00ffff !important;
         font-weight: bold !important;
+        text-shadow: 0 0 10px #00ffff !important;
     }
     
     /* Styling for subheader */
     .subheader {
-        color: #00ff00 !important;
-        font-family: "Courier New", monospace !important;
+        color: #00ffff !important;
+        font-family: "Orbitron", sans-serif !important;
     }
     
     /* Force dark background for body */
     body {
-        background-color: #000000 !important;
+        background-color: #0a1929 !important;
     }
     
     /* Override any Streamlit white backgrounds */
     .css-1kyxreq, .css-12oz5g7, .css-1r6slb0, .css-1n76uvr, .css-18e3th9 {
-        background-color: #000000 !important;
+        background-color: #0a1929 !important;
     }
     
     /* Fix header text color */
     .css-10trblm {
-        color: #00ff00 !important;
+        color: #00ffff !important;
     }
     
-    /* Ensure the header is green */
+    /* Ensure the header is cyan */
     h1 {
-        color: #00ff00 !important;
-        font-family: "Courier New", monospace !important;
-        text-shadow: 0 0 5px #00ff00 !important;
+        color: #00ffff !important;
+        font-family: "Orbitron", sans-serif !important;
+        text-shadow: 0 0 10px #00ffff !important;
     }
     
-    /* Add a slight glow effect to green text for a more cyber feel */
+    /* Add a glow effect to cyan text for a more futuristic feel */
     .glow-text {
-        text-shadow: 0 0 5px #00ff00 !important;
+        text-shadow: 0 0 10px #00ffff !important;
     }
 
     /* Override more styles to ensure everything is dark */
     div[data-baseweb="base-input"] {
-        background-color: #1E1E1E !important;
+        background-color: rgba(10, 25, 41, 0.9) !important;
     }
 
     div[data-baseweb="input"] {
-        background-color: #1E1E1E !important;
+        background-color: rgba(10, 25, 41, 0.9) !important;
     }
     
     /* Fix for dark form backgrounds */
@@ -1063,25 +1078,46 @@ def main():
         background-color: transparent !important;
         border: none !important;
     }
+    
+    /* Status indicators */
+    .status-indicator {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+    
+    .status-active {
+        background-color: #00ffff;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(0, 255, 255, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+    }
     </style>
     """, unsafe_allow_html=True)
     
-    # Military-style header with glow effect
-    st.markdown("<h1 class='glow-text' style='text-align: center; color: #00ff00; font-family: \"Courier New\", monospace; margin-top: 0; margin-bottom: 5px;'>DEEPDRONE COMMAND CENTER</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='subheader glow-text' style='text-align: center; margin-bottom: 5px;'>SECURE TACTICAL OPERATIONS INTERFACE</p>", unsafe_allow_html=True)
+    # Futuristic header with glow effect
+    st.markdown("<h1 class='glow-text' style='text-align: center; color: #00ffff; font-family: \"Orbitron\", sans-serif; margin-top: 0; margin-bottom: 5px;'>DEEPDRONE COMMAND CENTER</h1>", unsafe_allow_html=True)
+    st.markdown("<p class='subheader glow-text' style='text-align: center; margin-bottom: 5px;'>ADVANCED AI-POWERED DRONE OPERATIONS</p>", unsafe_allow_html=True)
     
     # Compact status display inline
     status_cols = st.columns(4)
     with status_cols[0]:
-        st.markdown("<div class='terminal-text' style='font-size: 12px;'><b>SYSTEM:</b> ONLINE</div>", unsafe_allow_html=True)
+        st.markdown("<div class='futuristic-text' style='font-size: 12px;'><span class='status-indicator status-active'></span><b>SYSTEM:</b> ONLINE</div>", unsafe_allow_html=True)
     with status_cols[1]:
-        st.markdown("<div class='terminal-text' style='font-size: 12px;'><b>CONNECTION:</b> SECURE</div>", unsafe_allow_html=True)
+        st.markdown("<div class='futuristic-text' style='font-size: 12px;'><span class='status-indicator status-active'></span><b>CONNECTION:</b> SECURE</div>", unsafe_allow_html=True)
     with status_cols[2]:
-        st.markdown("<div class='terminal-text' style='font-size: 12px;'><b>GPS:</b> ACTIVE</div>", unsafe_allow_html=True)
+        st.markdown("<div class='futuristic-text' style='font-size: 12px;'><span class='status-indicator status-active'></span><b>GPS:</b> ACTIVE</div>", unsafe_allow_html=True)
     with status_cols[3]:
-        st.markdown("<div class='terminal-text' style='font-size: 12px;'><b>ENCRYPTION:</b> ENABLED</div>", unsafe_allow_html=True)
+        st.markdown("<div class='futuristic-text' style='font-size: 12px;'><span class='status-indicator status-active'></span><b>ENCRYPTION:</b> ENABLED</div>", unsafe_allow_html=True)
     
-    st.markdown("<hr style='border: 1px solid #00ff00; margin: 5px 0 10px 0;'>", unsafe_allow_html=True)
+    st.markdown("<hr style='border: 1px solid #00ffff; margin: 5px 0 10px 0;'>", unsafe_allow_html=True)
     
     # Initialize session state for drone assistant and other needed state
     if 'drone_agent' not in st.session_state:
@@ -1149,23 +1185,23 @@ def main():
         st.session_state['demo_data_loaded'] = True
     
     # Add mission status section to sidebar with improved visibility
-    st.sidebar.markdown("<h3 style='color: #00ff00; font-family: \"Courier New\", monospace;'>MISSION CONTROL</h3>", unsafe_allow_html=True)
+    st.sidebar.markdown("<h3 style='color: #00ffff; font-family: \"Orbitron\", sans-serif; text-shadow: 0 0 10px #00ffff;'>MISSION CONTROL</h3>", unsafe_allow_html=True)
     
     # Dynamic status display that changes color based on status
-    status_color = "#00ff00"  # Default green
+    status_color = "#00ffff"  # Default cyan
     if st.session_state.mission_status == "ERROR":
-        status_color = "#ff0000"  # Red for errors
+        status_color = "#ff3366"  # Red for errors
     elif st.session_state.mission_status in ["CONNECTING", "TAKING OFF", "LANDING", "RETURNING"]:
-        status_color = "#ffff00"  # Yellow for transitions
+        status_color = "#ffcc00"  # Yellow for transitions
     elif st.session_state.mission_status in ["MISSION", "EXECUTING MISSION", "AIRBORNE"]:
         status_color = "#00ffff"  # Cyan for active mission
     
     st.sidebar.markdown(f"""
-    <div style='font-family: "Courier New", monospace; color: #00ff00;'>
-    <b>STATUS:</b> <span style="color: {status_color}; font-weight: bold;">{st.session_state.mission_status}</span><br>
-    <b>PHASE:</b> <span style="color: {status_color};">{st.session_state.mission_phase}</span><br>
-    <b>ACTIVE:</b> {"YES" if st.session_state.mission_in_progress else "NO"}<br>
-    <b>SIGNAL:</b> STRONG
+    <div style='font-family: "Orbitron", sans-serif; color: #00ffff; background-color: rgba(10, 25, 41, 0.9); padding: 15px; border-radius: 10px; border: 1px solid #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);'>
+        <div style='margin-bottom: 10px;'><span class='status-indicator status-active'></span><b>STATUS:</b> <span style="color: {status_color}; font-weight: bold;">{st.session_state.mission_status}</span></div>
+        <div style='margin-bottom: 10px;'><span class='status-indicator status-active'></span><b>PHASE:</b> <span style="color: {status_color};">{st.session_state.mission_phase}</span></div>
+        <div style='margin-bottom: 10px;'><span class='status-indicator status-active'></span><b>ACTIVE:</b> {"YES" if st.session_state.mission_in_progress else "NO"}</div>
+        <div><span class='status-indicator status-active'></span><b>SIGNAL:</b> STRONG</div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1178,7 +1214,7 @@ def main():
             interrupt_mission()
     
     # Add mission summary in sidebar
-    st.sidebar.markdown("<div style='color: #00ff00; font-family: monospace; font-size: 12px;'><b>MISSION MESSAGES:</b> Appearing in chat</div>", unsafe_allow_html=True)
+    st.sidebar.markdown("<div style='color: #00ffff; font-family: \"Orbitron\", sans-serif; font-size: 12px; margin-top: 20px;'><b>MISSION MESSAGES:</b> Appearing in chat</div>", unsafe_allow_html=True)
     
     # Show just the last message if there are any mission logs
     if st.session_state.mission_log:
@@ -1187,50 +1223,36 @@ def main():
         
         # Style the last entry based on its content
         if "ERROR" in last_entry:
-            entry_style = "color: #ff0000;"
+            entry_style = "color: #ff3366;"
         elif any(status in last_entry for status in ["CONNECTING", "TAKING OFF", "LANDING", "RETURNING"]):
-            entry_style = "color: #ffff00;"
+            entry_style = "color: #ffcc00;"
         elif any(status in last_entry for status in ["MISSION", "EXECUTING", "AIRBORNE"]):
             entry_style = "color: #00ffff;"
         else:
-            entry_style = "color: #88ff88;"
+            entry_style = "color: #00ffff;"
             
-        st.sidebar.markdown(f"""<div style='font-family: monospace; font-size: 11px; {entry_style} background-color: #111111; padding: 4px; border-radius: 3px;'>LAST: {last_entry}</div>""", unsafe_allow_html=True)
+        st.sidebar.markdown(f"""<div style='font-family: \"Orbitron\", sans-serif; font-size: 11px; {entry_style} background-color: rgba(10, 25, 41, 0.9); padding: 8px; border-radius: 5px; border: 1px solid #00ffff; box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);'><span class='status-indicator status-active'></span>LAST: {last_entry}</div>""", unsafe_allow_html=True)
     
-    st.sidebar.markdown("<hr style='border: 1px solid #00ff00; margin: 20px 0;'>", unsafe_allow_html=True)
+    st.sidebar.markdown("<hr style='border: 1px solid #00ffff; margin: 20px 0;'>", unsafe_allow_html=True)
     
     # Command reference
-    st.sidebar.markdown("<h3 style='color: #00ff00; font-family: \"Courier New\", monospace;'>COMMAND REFERENCE</h3>", unsafe_allow_html=True)
+    st.sidebar.markdown("<h3 style='color: #00ffff; font-family: \"Orbitron\", sans-serif; text-shadow: 0 0 10px #00ffff;'>COMMAND REFERENCE</h3>", unsafe_allow_html=True)
     st.sidebar.markdown("""
-    <div style='font-family: "Courier New", monospace; color: #00ff00;'>
-    <b>DATA ANALYSIS:</b><br>
-    - "Analyze flight_001"<br>
-    - "Check battery sensor readings"<br>
-    - "Recommend maintenance for 75 flight hours"<br>
-    <br>
-    <b>MISSION PLANNING:</b><br>
-    - "Create a flight plan with a square pattern"<br>
-    - "Plan a survey mission for 30 minutes"<br>
-    - "Connect to the simulator, take off, execute a simple square flight pattern, and return home"<br>
-    <br>
-    <b>CORRECT FUNCTION NAMES:</b><br>
-    - connect_to_real_drone()<br>
-    - drone_takeoff()<br>
-    - drone_land()<br>
-    - drone_return_home()<br>
-    - drone_fly_to()<br>
-    - execute_drone_mission()<br>
+    <div style='font-family: "Orbitron", sans-serif; color: #00ffff; background-color: rgba(10, 25, 41, 0.9); padding: 15px; border-radius: 10px; border: 1px solid #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);'>
+        <div style='margin-bottom: 10px;'><b>DATA ANALYSIS:</b><br>- "Analyze flight_001"<br>- "Check battery sensor readings"<br>- "Recommend maintenance for 75 flight hours"</div>
+        <div style='margin-bottom: 10px;'><b>MISSION PLANNING:</b><br>- "Create a flight plan with a square pattern"<br>- "Plan a survey mission for 30 minutes"<br>- "Connect to the simulator, take off, execute a simple square flight pattern, and return home"</div>
+        <div><b>CORRECT FUNCTION NAMES:</b><br>- connect_to_real_drone()<br>- drone_takeoff()<br>- drone_land()<br>- drone_return_home()<br>- drone_fly_to()<br>- execute_drone_mission()</div>
     </div>
     """, unsafe_allow_html=True)
     
-    st.sidebar.markdown("<hr style='border: 1px solid #00ff00; margin: 20px 0;'>", unsafe_allow_html=True)
+    st.sidebar.markdown("<hr style='border: 1px solid #00ffff; margin: 20px 0;'>", unsafe_allow_html=True)
     
     # Available data
-    st.sidebar.markdown("<h3 style='color: #00ff00; font-family: \"Courier New\", monospace;'>AVAILABLE DATA</h3>", unsafe_allow_html=True)
+    st.sidebar.markdown("<h3 style='color: #00ffff; font-family: \"Orbitron\", sans-serif; text-shadow: 0 0 10px #00ffff;'>AVAILABLE DATA</h3>", unsafe_allow_html=True)
     st.sidebar.markdown("""
-    <div style='font-family: "Courier New", monospace; color: #00ff00;'>
-    <b>FLIGHT LOGS:</b> flight_001<br>
-    <b>SENSORS:</b> battery, imu
+    <div style='font-family: "Orbitron", sans-serif; color: #00ffff; background-color: rgba(10, 25, 41, 0.9); padding: 15px; border-radius: 10px; border: 1px solid #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);'>
+        <div style='margin-bottom: 10px;'><span class='status-indicator status-active'></span><b>FLIGHT LOGS:</b> flight_001</div>
+        <div><span class='status-indicator status-active'></span><b>SENSORS:</b> battery, imu</div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1240,9 +1262,7 @@ def main():
     # Info message about mission logs appearing in chat
     if st.session_state.mission_in_progress:
         st.markdown("""
-        <div style="text-align: center; margin-bottom: 8px; font-family: monospace; font-size: 12px; color: #00aaff;">
-            MISSION LOGS WILL APPEAR IN THIS CHAT WINDOW
-        </div>
+        <div style="text-align: center; margin-bottom: 8px; font-family: 'Orbitron', sans-serif; font-size: 12px; color: #00ffff; text-shadow: 0 0 10px #00ffff;"><span class='status-indicator status-active'></span>MISSION LOGS WILL APPEAR IN THIS CHAT WINDOW</div>
         """, unsafe_allow_html=True)
     
     # Display initial assistant greeting or chat history
@@ -1250,9 +1270,9 @@ def main():
         # Welcome message with drone emoji
         st.markdown("""
         <div style="display: flex; align-items: flex-start; margin-bottom: 8px;">
-            <div style="font-size: 20px; margin-right: 8px; color: #00ff00;">🚁</div>
-            <div style="background-color: #101010; border: 1px solid #00ff00; border-radius: 5px; padding: 8px; color: #00ff00; flex-grow: 1;">
-                DEEPDRONE SYSTEM ONLINE. I am DeepDrone, your advanced drone operations assistant. AWAITING COMMANDS. You can request flight data analysis, sensor readings, maintenance recommendations, or mission planning.
+            <div style="font-size: 24px; margin-right: 8px; color: #00ffff; text-shadow: 0 0 10px #00ffff;">🚁</div>
+            <div style="background-color: rgba(10, 25, 41, 0.9); border: 1px solid #00ffff; border-radius: 10px; padding: 12px; color: #00ffff; flex-grow: 1; font-family: 'Orbitron', sans-serif; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); backdrop-filter: blur(5px);">
+                DEEPDRONE SYSTEM ONLINE. I am your advanced AI-powered drone operations assistant. How can I assist with your mission today? You can request flight data analysis, sensor readings, maintenance recommendations, or mission planning.
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1262,27 +1282,24 @@ def main():
             if message["role"] == "user":
                 st.markdown(f"""
                 <div style="display: flex; align-items: flex-start; justify-content: flex-end; margin-bottom: 8px;">
-                    <div style="background-color: #1E1E1E; border: 1px solid #00ff00; border-radius: 5px; padding: 8px; color: #FFFFFF; max-width: 85%;">
+                    <div style="background-color: rgba(10, 25, 41, 0.9); border: 1px solid #00ffff; border-radius: 10px; padding: 12px; color: #FFFFFF; max-width: 85%; font-family: 'Orbitron', sans-serif; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); backdrop-filter: blur(5px);">
                         {message["content"]}
                     </div>
-                    <div style="font-size: 20px; margin-left: 8px; color: #00ff00;">👤</div>
+                    <div style="font-size: 24px; margin-left: 8px; color: #00ffff; text-shadow: 0 0 10px #00ffff;">👤</div>
                 </div>
                 """, unsafe_allow_html=True)
             elif message["role"] == "system":
                 # System messages (logs) have a different style - centered and distinctive
                 st.markdown(f"""
                 <div style="display: flex; justify-content: center; align-items: center; margin: 4px 0;">
-                    <div style="background-color: #0A0A0A; border: 1px solid #333333; border-radius: 3px; padding: 3px 10px; 
-                                font-family: monospace; font-size: 12px; text-align: center; max-width: 90%; opacity: 0.9;">
-                        {message["content"]}
-                    </div>
+                    <div style="background-color: rgba(10, 25, 41, 0.9); border: 1px solid #00ffff; border-radius: 5px; padding: 8px 15px; font-family: 'Orbitron', sans-serif; font-size: 12px; text-align: center; max-width: 90%; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); backdrop-filter: blur(5px);"><span class='status-indicator status-active'></span>{message["content"]}</div>
                 </div>
                 """, unsafe_allow_html=True)
             else:
                 st.markdown(f"""
                 <div style="display: flex; align-items: flex-start; margin-bottom: 8px;">
-                    <div style="font-size: 20px; margin-right: 8px; color: #00ff00;">🚁</div>
-                    <div style="background-color: #101010; border: 1px solid #00ff00; border-radius: 5px; padding: 8px; color: #00ff00; max-width: 85%;">
+                    <div style="font-size: 24px; margin-right: 8px; color: #00ffff; text-shadow: 0 0 10px #00ffff;">🚁</div>
+                    <div style="background-color: rgba(10, 25, 41, 0.9); border: 1px solid #00ffff; border-radius: 10px; padding: 12px; color: #00ffff; max-width: 85%; font-family: 'Orbitron', sans-serif; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); backdrop-filter: blur(5px);">
                         {message["content"]}
                     </div>
                 </div>
@@ -1302,7 +1319,7 @@ def main():
     
     # Command bar fixed at the bottom
     st.markdown("""
-    <div class="command-bar-wrapper" style="position: fixed; bottom: 0; left: 0; right: 0; padding: 8px; background-color: #0A0A0A; border-top: 2px solid #00ff00;">
+    <div class="command-bar-wrapper" style="position: fixed; bottom: 0; left: 0; right: 0; padding: 12px; background-color: rgba(10, 25, 41, 0.9); border-top: 1px solid #00ffff; box-shadow: 0 -5px 20px rgba(0, 255, 255, 0.1); backdrop-filter: blur(10px);">
     """, unsafe_allow_html=True)
     
     # Create a more compact form
@@ -1323,7 +1340,7 @@ def main():
             
     st.markdown("</div>", unsafe_allow_html=True)
     
-    # Process form submission
+    # Handle user input from chat
     if submit_button and user_message:
         # Add user message to chat history
         st.session_state['chat_history'].append({
