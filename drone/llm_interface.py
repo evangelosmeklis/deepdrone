@@ -63,8 +63,6 @@ class LLMInterface:
                     os.environ["OPENAI_API_KEY"] = self.model_config.api_key
                 elif self.model_config.provider == "anthropic":
                     os.environ["ANTHROPIC_API_KEY"] = self.model_config.api_key
-                elif self.model_config.provider == "huggingface":
-                    os.environ["HUGGINGFACE_API_KEY"] = self.model_config.api_key
                 elif self.model_config.provider == "mistral":
                     os.environ["MISTRAL_API_KEY"] = self.model_config.api_key
                 elif self.model_config.provider == "vertex_ai":

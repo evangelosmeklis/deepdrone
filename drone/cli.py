@@ -50,7 +50,7 @@ def chat(
         return
     
     # Check if model needs API key
-    if model_config.provider in ["openai", "anthropic", "huggingface"] and not model_config.api_key:
+    if model_config.provider in ["openai", "anthropic"] and not model_config.api_key:
         console.print(f"[yellow]Model '{model}' requires an API key[/yellow]")
         if Confirm.ask("Would you like to set it now?"):
             set_api_key_interactive(model)
@@ -136,7 +136,7 @@ def add_model(
     console.print(f"[green]Model '{name}' added successfully[/green]")
     
     # Ask for API key if needed
-    if provider in ["openai", "anthropic", "huggingface"]:
+    if provider in ["openai", "anthropic"]:
         if Confirm.ask(f"Would you like to set the API key for '{name}' now?"):
             set_api_key_interactive(name)
 
@@ -263,8 +263,6 @@ def set_api_key_interactive(model_name: str, api_key: Optional[str] = None):
             console.print("Get your OpenAI API key from: https://platform.openai.com/api-keys")
         elif model_config.provider == "anthropic":
             console.print("Get your Anthropic API key from: https://console.anthropic.com/")
-        elif model_config.provider == "huggingface":
-            console.print("Get your Hugging Face token from: https://huggingface.co/settings/tokens")
         
         api_key = getpass.getpass("Enter API key (hidden): ")
     

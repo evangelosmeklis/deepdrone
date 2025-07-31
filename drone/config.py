@@ -12,7 +12,7 @@ from pydantic_settings import BaseSettings
 class ModelConfig(BaseModel):
     """Configuration for a specific model."""
     name: str
-    provider: str  # 'openai', 'anthropic', 'ollama', 'huggingface', etc.
+    provider: str  # 'openai', 'anthropic', 'ollama', etc.
     api_key: Optional[str] = None
     base_url: Optional[str] = None
     model_id: str
@@ -175,7 +175,7 @@ class ConfigManager:
         """Get list of models that require API keys."""
         api_models = []
         for name, config in self.models.items():
-            if config.provider in ["openai", "anthropic", "huggingface"]:
+            if config.provider in ["openai", "anthropic"]:
                 api_models.append(name)
         return api_models
 
