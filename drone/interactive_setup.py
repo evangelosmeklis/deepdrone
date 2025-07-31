@@ -383,17 +383,39 @@ def start_interactive_session():
                 console.print("[yellow]Setup cancelled. Goodbye![/yellow]")
                 return
         
-        # Step 5: Show simulator information
+        # Step 5: Get drone connection string
         console.print("[bold yellow]🚁 Drone Connection Setup[/bold yellow]\n")
-        console.print("To control a drone, you'll need a connection. You can:")
-        console.print("  1. [green]Use Simulator[/green]: Run [cyan]python simulate_drone.py[/cyan] in another terminal")
-        console.print("  2. [blue]Real Drone[/blue]: Connect via USB, TCP, or UDP")
-        console.print("  3. [dim]SITL[/dim]: Use ArduPilot Software-in-the-Loop\n")
         
-        console.print("💡 [bold]Quick Start with Simulator:[/bold]")
-        console.print("   • Open a new terminal and run: [cyan]python simulate_drone.py[/cyan]")
-        console.print("   • It will show you the connection string (e.g., udp:127.0.0.1:14550)")
-        console.print("   • Use that connection string in the chat interface\n")
+        # Check if simulator is already running
+        import subprocess
+        try:
+            result = subprocess.run(['ps', 'aux'], capture_output=True, text=True)
+            if 'mavproxy' in result.stdout.lower() or 'sitl' in result.stdout.lower():
+                console.print("[green]✅ Detected running drone simulator![/green]")
+                default_connection = "udp:127.0.0.1:14550"
+            else:
+                console.print("[yellow]⚠️  No simulator detected[/yellow]")
+                default_connection = "udp:127.0.0.1:14550"
+        except:
+            default_connection = "udp:127.0.0.1:14550"
+        
+        console.print("Connection options:")
+        console.print("  • [green]Simulator[/green]: [cyan]udp:127.0.0.1:14550[/cyan] (default)")
+        console.print("  • [blue]Real Drone USB[/blue]: [cyan]/dev/ttyACM0[/cyan] (Linux) or [cyan]COM3[/cyan] (Windows)")
+        console.print("  • [blue]Real Drone TCP[/blue]: [cyan]tcp:192.168.1.100:5760[/cyan]")
+        console.print("  • [blue]Real Drone UDP[/blue]: [cyan]udp:192.168.1.100:14550[/cyan]\n")
+        
+        from rich.prompt import Prompt
+        connection_string = Prompt.ask(
+            "Enter drone connection string",
+            default=default_connection
+        )
+        
+        if not connection_string:
+            console.print("[yellow]Using default connection: udp:127.0.0.1:14550[/yellow]")
+            connection_string = "udp:127.0.0.1:14550"
+        
+        console.print(f"[dim]Will connect to: {connection_string}[/dim]\n")
         
         # Step 6: Start chat
         console.print("[bold green]🚀 Starting DeepDrone chat session...[/bold green]\n")
@@ -402,8 +424,8 @@ def start_interactive_session():
         import time
         time.sleep(1)
         
-        # Start the chat interface
-        chat_interface = DroneChatInterface(model_config)
+        # Start the chat interface with the connection string
+        chat_interface = DroneChatInterface(model_config, connection_string)
         chat_interface.start()
         
     except KeyboardInterrupt:

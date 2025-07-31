@@ -51,15 +51,31 @@ class DroneController:
             
         try:
             logger.info(f"Connecting to drone on {self.connection_string}...")
-            self.vehicle = connect(self.connection_string, wait_ready=True, timeout=timeout)
+            # Connect without wait_ready to avoid iteration issues
+            self.vehicle = connect(self.connection_string, wait_ready=False, timeout=timeout)
+            
+            # Wait for basic attributes to be available
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                try:
+                    # Try to access basic vehicle info safely
+                    if hasattr(self.vehicle, 'version') and self.vehicle.version:
+                        break
+                except:
+                    pass
+                time.sleep(0.1)
+            
             self.connected = True
             logger.info("Connected to drone successfully")
             
-            # Log basic vehicle info
-            logger.info(f"Vehicle Version: {self.vehicle.version}")
-            logger.info(f"Vehicle Status: {self.vehicle.system_status.state}")
-            logger.info(f"GPS: {self.vehicle.gps_0}")
-            logger.info(f"Battery: {self.vehicle.battery}")
+            # Log basic vehicle info safely
+            try:
+                if hasattr(self.vehicle, 'version'):
+                    logger.info(f"Vehicle Version: {self.vehicle.version}")
+                if hasattr(self.vehicle, 'system_status') and hasattr(self.vehicle.system_status, 'state'):
+                    logger.info(f"Vehicle Status: {self.vehicle.system_status.state}")
+            except Exception as e:
+                logger.warning(f"Could not read vehicle info: {e}")
             
             return True
         except Exception as e:

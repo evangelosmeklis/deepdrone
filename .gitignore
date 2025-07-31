@@ -80,3 +80,14 @@ ENV/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Drone/ArduPilot files
+logs/
+*.bin
+*.BIN
+*.parm
+mav.parm
+eeprom.bin
+
+# Media files
+media/
