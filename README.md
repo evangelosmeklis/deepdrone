@@ -1,6 +1,6 @@
 # 🚁 DeepDrone - AI-Powered Drone Control Terminal
 
-<img src="media/demo.png" alt="DeepDrone Demo" width="800">
+![DeepDrone Demo](media/demo.png)
 
 **Control drones with natural language using AI models like OpenAI, Anthropic, Google, Meta, Mistral, and local Ollama models.**
 
