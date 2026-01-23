@@ -13,33 +13,40 @@ import time
 import threading
 from pathlib import Path
 
-# Add the current directory to Python path for imports
+# Add the repo root to Python path for imports
 current_dir = Path(__file__).parent
-sys.path.insert(0, str(current_dir))
+repo_root = current_dir.parent
+sys.path.insert(0, str(repo_root))
+
 
 def open_browser():
     """Open browser after a short delay."""
     time.sleep(1.5)  # Wait for server to start
-    webbrowser.open('http://localhost:8000')
+    webbrowser.open("http://localhost:8000")
+
 
 def main():
     """Main entry point for the DeepDrone web application."""
     try:
         # Load environment variables if .env file exists
-        env_file = current_dir / ".env"
+        env_file = repo_root / ".env"
         if env_file.exists():
             from dotenv import load_dotenv
+
             load_dotenv(env_file)
 
         # Check for CLI mode flag
-        if len(sys.argv) > 1 and sys.argv[1] == '--cli':
+        if len(sys.argv) > 1 and sys.argv[1] == "--cli":
             # Run the old terminal-based interface
             from drone.interactive_setup import start_interactive_session
+
             start_interactive_session()
         else:
             # Start web server
             import uvicorn
-            from web_server import app
+            from drone.web_server import app
+
+            os.chdir(repo_root)
 
             print("=" * 60)
             print("🚁 DeepDrone - AI-Powered Drone Control")
@@ -66,8 +73,10 @@ def main():
     except Exception as e:
         print(f"❌ Error starting DeepDrone: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 
+
 if __name__ == "__main__":
-    main() 
+    main()

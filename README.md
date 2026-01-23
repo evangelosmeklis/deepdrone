@@ -10,11 +10,13 @@
 # Install dependencies
 pip3 install -r requirements.txt
 
-# Start everything
-./start.sh
+# Start everything (simulator + web UI)
+python3 run.py
 ```
 
 This launches the web interface at **http://localhost:8000** with the simulator running in the background.
+
+Optional: run `bash tools/start.sh` for a shell wrapper.
 
 ## ✨ Features
 
@@ -23,9 +25,11 @@ This launches the web interface at **http://localhost:8000** with the simulator 
 - 🚁 **Real Drone Control** - DroneKit integration for actual flight
 - 🎮 **Webots UDP Support** - Direct control for C-based Webots simulators
 - 💬 **Natural Language** - Control drones conversationally
-- 📊 **Live Telemetry** - Real-time altitude, battery, GPS
+- 📊 **Live Telemetry** - Real-time altitude, battery, GPS with map view
+- 🗺️ **Mission Planner** - Build waypoint missions in the UI
+- 🎬 **Session Replay** - Replay chat + telemetry sessions
 - 🛠️ **Built-in Simulator** - Test without hardware
-- 🔒 **Safe Operations** - Emergency stops and return-to-home
+- 🔒 **Safe Operations** - Emergency stops, return-to-home, and safety limits
 
 ## 💬 Example Commands
 
@@ -50,9 +54,22 @@ This launches the web interface at **http://localhost:8000** with the simulator 
 **Backend:** FastAPI, DroneKit-Python, LiteLLM, Ollama
 **Frontend:** Vanilla JavaScript, WebSocket, Modern CSS
 
+## 🧭 Repository Layout
+
+- `run.py` - Main entrypoint (simulator + web UI)
+- `drone/` - Core drone control, LLM integration, API server
+- `static/` - Web UI assets (HTML/CSS/JS)
+- `tools/` - Optional helpers (launcher, simulator, Webots tester)
+- `media/` - Screenshots and demo images
+- `examples/` - Example configs or usage snippets
+- `logs/` - Session logs and runtime output
+- `terrain/` - Terrain assets for simulation
+- `webots_file/` - Webots C controller example
+- `misc/` - Legacy scripts and experiments
+
 ## 📖 Usage
 
-1. **Launch**: Run `./start.sh` to start the simulator and web interface
+1. **Launch**: Run `python3 run.py` to start the simulator and web interface
 2. **Configure AI**: Click Settings and choose your AI provider (Ollama is free and local)
 3. **Connect Drone**: Choose your connection type:
    - `tcp:127.0.0.1:5760` - DroneKit/MAVLink simulator
@@ -66,7 +83,7 @@ DeepDrone now supports **direct UDP control** for Webots C-based drone controlle
 **Quick Start:**
 ```bash
 # Test UDP connection (without Webots)
-python test_webots_udp.py --demo
+python tools/test_webots_udp.py --demo
 
 # Use in web interface: connect to "webots" or "udp:127.0.0.1:9000"
 ```

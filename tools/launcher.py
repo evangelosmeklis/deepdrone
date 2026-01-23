@@ -12,9 +12,11 @@ import webbrowser
 import threading
 from pathlib import Path
 
-# Add the current directory to Python path for imports
+# Add the repo root to Python path for imports
 current_dir = Path(__file__).parent
-sys.path.insert(0, str(current_dir))
+repo_root = current_dir.parent
+sys.path.insert(0, str(repo_root))
+
 
 class DeepDroneLauncher:
     def __init__(self):
@@ -24,19 +26,19 @@ class DeepDroneLauncher:
     def open_browser(self):
         """Open browser after a short delay."""
         time.sleep(2)  # Wait for server to start
-        webbrowser.open('http://localhost:8000')
+        webbrowser.open("http://localhost:8000")
 
     def start_simulator(self):
         """Start the drone simulator in the background."""
         print("🚁 Starting drone simulator...")
         try:
             self.simulator_process = subprocess.Popen(
-                [sys.executable, 'simple_simulator.py'],
+                [sys.executable, "simulator.py"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 cwd=current_dir,
                 bufsize=1,
-                universal_newlines=True
+                universal_newlines=True,
             )
             print("✓ Simulator started (PID: {})".format(self.simulator_process.pid))
             time.sleep(2)  # Give simulator time to initialize
@@ -50,7 +52,9 @@ class DeepDroneLauncher:
         print("🌐 Starting web server...")
         try:
             import uvicorn
-            from web_server import app
+            from drone.web_server import app
+
+            os.chdir(repo_root)
 
             # Open browser in a separate thread
             browser_thread = threading.Thread(target=self.open_browser, daemon=True)
@@ -62,6 +66,7 @@ class DeepDroneLauncher:
         except Exception as e:
             print(f"✗ Failed to start web server: {e}")
             import traceback
+
             traceback.print_exc()
             return False
 
@@ -87,11 +92,15 @@ class DeepDroneLauncher:
         print("🧹 Cleaning up ports...")
         try:
             # Kill processes on port 8000
-            subprocess.run("lsof -ti:8000 | xargs kill -9 2>/dev/null || true", shell=True)
+            subprocess.run(
+                "lsof -ti:8000 | xargs kill -9 2>/dev/null || true", shell=True
+            )
             # Kill processes on port 5760
-            subprocess.run("lsof -ti:5760 | xargs kill -9 2>/dev/null || true", shell=True)
+            subprocess.run(
+                "lsof -ti:5760 | xargs kill -9 2>/dev/null || true", shell=True
+            )
             # Kill any old simulator processes
-            subprocess.run("pkill -f simple_simulator.py 2>/dev/null || true", shell=True)
+            subprocess.run("pkill -f simulator.py 2>/dev/null || true", shell=True)
             time.sleep(1)
             print("✓ Ports cleaned")
             print()
@@ -101,6 +110,7 @@ class DeepDroneLauncher:
 
     def run(self):
         """Main launcher."""
+
         # Set up signal handler for graceful shutdown
         def signal_handler(sig, frame):
             self.cleanup()
@@ -155,9 +165,11 @@ class DeepDroneLauncher:
         finally:
             self.cleanup()
 
+
 def main():
     launcher = DeepDroneLauncher()
     launcher.run()
+
 
 if __name__ == "__main__":
     main()

@@ -30,6 +30,19 @@
         </div>
 
         <div class="sidebar-footer">
+            <button class="sidebar-btn" id="missionBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18M3 12h18M3 18h18"/>
+                </svg>
+                <span>Mission Planner</span>
+            </button>
+            <button class="sidebar-btn" id="sessionsBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8 7h8M8 12h8M8 17h5"/>
+                    <rect x="4" y="3" width="16" height="18" rx="2"/>
+                </svg>
+                <span>Sessions</span>
+            </button>
             <button class="sidebar-btn" id="settingsBtn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="3"/>
@@ -120,6 +133,15 @@
                     <span class="telem-value" id="telemBattery">-</span>
                 </div>
             </div>
+            <div class="map-panel">
+                <div class="map-header">Map</div>
+                <canvas id="mapCanvas" width="240" height="160"></canvas>
+                <div class="map-coordinates">
+                    <div><span class="map-label">Lat</span><span id="mapLat">-</span></div>
+                    <div><span class="map-label">Lon</span><span id="mapLon">-</span></div>
+                    <div><span class="map-label">Alt</span><span id="mapAlt">-</span></div>
+                </div>
+            </div>
         </div>
 
         <!-- Input Area -->
@@ -208,6 +230,43 @@
                         </svg>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission Modal -->
+    <div class="modal" id="missionModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Mission Planner</h2>
+                <button class="icon-btn" id="closeMissionBtn">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="mission-toolbar">
+                    <button class="btn-secondary" id="addWaypointBtn">Add Waypoint</button>
+                </div>
+                <div class="waypoint-list" id="waypointList"></div>
+                <div id="missionStatus" class="status-msg"></div>
+            </div>
+            <div class="modal-footer mission-footer">
+                <button class="btn-secondary" id="uploadMissionBtn">Upload Mission</button>
+                <button class="btn-primary" id="executeMissionBtn">Execute Mission</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sessions Modal -->
+    <div class="modal" id="sessionsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Session Replay</h2>
+                <button class="icon-btn" id="closeSessionsBtn">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="mission-toolbar">
+                    <button class="btn-secondary" id="refreshSessionsBtn">Refresh</button>
+                </div>
+                <div class="sessions-list" id="sessionsList"></div>
             </div>
         </div>
     </div>

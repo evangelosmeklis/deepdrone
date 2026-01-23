@@ -6,6 +6,8 @@ class DeepDrone {
         this.isAIConfigured = false;
         this.isDroneConnected = false;
         this.telemetryInterval = null;
+        this.mapPath = [];
+        this.mapBase = null;
 
         this.init();
     }
@@ -28,6 +30,12 @@ class DeepDrone {
         this.settingsModal = document.getElementById('settingsModal');
         this.settingsBtn = document.getElementById('settingsBtn');
         this.closeSettingsBtn = document.getElementById('closeSettingsBtn');
+        this.missionModal = document.getElementById('missionModal');
+        this.missionBtn = document.getElementById('missionBtn');
+        this.closeMissionBtn = document.getElementById('closeMissionBtn');
+        this.sessionsModal = document.getElementById('sessionsModal');
+        this.sessionsBtn = document.getElementById('sessionsBtn');
+        this.closeSessionsBtn = document.getElementById('closeSessionsBtn');
 
         // Settings form
         this.provider = document.getElementById('provider');
@@ -61,6 +69,21 @@ class DeepDrone {
         this.telemArmed = document.getElementById('telemArmed');
         this.telemAlt = document.getElementById('telemAlt');
         this.telemBattery = document.getElementById('telemBattery');
+        this.mapCanvas = document.getElementById('mapCanvas');
+        this.mapLat = document.getElementById('mapLat');
+        this.mapLon = document.getElementById('mapLon');
+        this.mapAlt = document.getElementById('mapAlt');
+
+        // Mission builder
+        this.addWaypointBtn = document.getElementById('addWaypointBtn');
+        this.waypointList = document.getElementById('waypointList');
+        this.uploadMissionBtn = document.getElementById('uploadMissionBtn');
+        this.executeMissionBtn = document.getElementById('executeMissionBtn');
+        this.missionStatus = document.getElementById('missionStatus');
+
+        // Sessions
+        this.sessionsList = document.getElementById('sessionsList');
+        this.refreshSessionsBtn = document.getElementById('refreshSessionsBtn');
     }
 
     attachEventListeners() {
@@ -72,10 +95,20 @@ class DeepDrone {
         // Modal controls
         this.settingsBtn.addEventListener('click', () => this.openModal(this.settingsModal));
         this.closeSettingsBtn.addEventListener('click', () => this.closeModal(this.settingsModal));
+        this.missionBtn.addEventListener('click', () => this.openMissionModal());
+        this.closeMissionBtn.addEventListener('click', () => this.closeModal(this.missionModal));
+        this.sessionsBtn.addEventListener('click', () => this.openSessionsModal());
+        this.closeSessionsBtn.addEventListener('click', () => this.closeModal(this.sessionsModal));
 
         // Click outside modal to close
         this.settingsModal.addEventListener('click', (e) => {
             if (e.target === this.settingsModal) this.closeModal(this.settingsModal);
+        });
+        this.missionModal.addEventListener('click', (e) => {
+            if (e.target === this.missionModal) this.closeModal(this.missionModal);
+        });
+        this.sessionsModal.addEventListener('click', (e) => {
+            if (e.target === this.sessionsModal) this.closeModal(this.sessionsModal);
         });
 
         // Settings
@@ -106,6 +139,14 @@ class DeepDrone {
         // Telemetry
         this.telemetryToggleBtn.addEventListener('click', () => this.toggleTelemetry());
         this.closeTelemetryBtn.addEventListener('click', () => this.toggleTelemetry());
+
+        // Mission builder
+        this.addWaypointBtn.addEventListener('click', () => this.addWaypointRow());
+        this.uploadMissionBtn.addEventListener('click', () => this.uploadMission());
+        this.executeMissionBtn.addEventListener('click', () => this.executeMission());
+
+        // Sessions
+        this.refreshSessionsBtn.addEventListener('click', () => this.loadSessions());
     }
 
     // Sidebar
@@ -154,6 +195,152 @@ class DeepDrone {
 
     closeModal(modal) {
         modal.classList.remove('open');
+    }
+
+    openMissionModal() {
+        if (!this.waypointList.children.length) {
+            this.addWaypointRow();
+        }
+        this.openModal(this.missionModal);
+    }
+
+    openSessionsModal() {
+        this.openModal(this.sessionsModal);
+        this.loadSessions();
+    }
+
+    addWaypointRow(defaults = {}) {
+        const row = document.createElement('div');
+        row.className = 'waypoint-row';
+
+        row.innerHTML = `
+            <div class="waypoint-fields">
+                <input type="number" step="0.000001" class="input waypoint-input" placeholder="Lat" value="${defaults.lat ?? ''}">
+                <input type="number" step="0.000001" class="input waypoint-input" placeholder="Lon" value="${defaults.lon ?? ''}">
+                <input type="number" step="0.1" class="input waypoint-input" placeholder="Alt (m)" value="${defaults.alt ?? ''}">
+                <input type="number" step="0.1" class="input waypoint-input" placeholder="Delay (s)" value="${defaults.delay ?? ''}">
+            </div>
+            <button class="icon-btn-small waypoint-remove" title="Remove">×</button>
+        `;
+
+        row.querySelector('.waypoint-remove').addEventListener('click', () => row.remove());
+        this.waypointList.appendChild(row);
+    }
+
+    async uploadMission() {
+        const waypoints = this.collectWaypoints();
+        if (!waypoints.length) {
+            this.showStatus(this.missionStatus, 'Add at least one waypoint', 'error');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/mission/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ waypoints })
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.detail || 'Mission upload failed');
+            }
+
+            this.showStatus(this.missionStatus, `✓ Uploaded ${data.waypoints} waypoints`, 'success');
+        } catch (error) {
+            this.showStatus(this.missionStatus, `✗ ${error.message}`, 'error');
+        }
+    }
+
+    async executeMission() {
+        try {
+            const response = await fetch('/api/mission/execute', { method: 'POST' });
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.detail || 'Mission execution failed');
+            }
+
+            this.showStatus(this.missionStatus, `✓ ${data.message}`, 'success');
+        } catch (error) {
+            this.showStatus(this.missionStatus, `✗ ${error.message}`, 'error');
+        }
+    }
+
+    collectWaypoints() {
+        const waypoints = [];
+        this.waypointList.querySelectorAll('.waypoint-row').forEach(row => {
+            const inputs = row.querySelectorAll('.waypoint-input');
+            const lat = parseFloat(inputs[0].value);
+            const lon = parseFloat(inputs[1].value);
+            const alt = parseFloat(inputs[2].value);
+            const delay = parseFloat(inputs[3].value) || 0;
+
+            if (!Number.isNaN(lat) && !Number.isNaN(lon) && !Number.isNaN(alt)) {
+                waypoints.push({ lat, lon, alt, delay });
+            }
+        });
+        return waypoints;
+    }
+
+    async loadSessions() {
+        this.sessionsList.innerHTML = '<div class="session-empty">Loading sessions...</div>';
+        try {
+            const response = await fetch('/api/sessions');
+            const data = await response.json();
+            const sessions = data.sessions || [];
+
+            if (!sessions.length) {
+                this.sessionsList.innerHTML = '<div class="session-empty">No sessions logged yet.</div>';
+                return;
+            }
+
+            this.sessionsList.innerHTML = '';
+            sessions.forEach(session => {
+                const item = document.createElement('div');
+                item.className = 'session-item';
+                item.innerHTML = `
+                    <div class="session-info">
+                        <div class="session-id">${session.id}</div>
+                        <div class="session-meta">${session.updated_at}</div>
+                    </div>
+                    <button class="btn-secondary session-replay">Replay</button>
+                `;
+                item.querySelector('.session-replay').addEventListener('click', () => this.replaySession(session.id));
+                this.sessionsList.appendChild(item);
+            });
+        } catch (error) {
+            this.sessionsList.innerHTML = '<div class="session-empty">Failed to load sessions.</div>';
+        }
+    }
+
+    async replaySession(sessionId) {
+        try {
+            const response = await fetch(`/api/sessions/${sessionId}`);
+            const data = await response.json();
+            const events = data.events || [];
+
+            if (!events.length) {
+                this.addMessage('No events found for this session.', 'error');
+                return;
+            }
+
+            this.messages.innerHTML = '';
+            this.addMessage(`Replaying session ${sessionId}...`, 'assistant');
+            let delay = 500;
+
+            events.forEach(event => {
+                if (event.type === 'user_message' || event.type === 'ai_message') {
+                    setTimeout(() => {
+                        const type = event.type === 'user_message' ? 'user' : 'assistant';
+                        this.addMessage(event.payload.message, type);
+                    }, delay);
+                    delay += 500;
+                }
+            });
+        } catch (error) {
+            this.addMessage('Failed to replay session.', 'error');
+        }
     }
 
     // AI Configuration
@@ -350,10 +537,7 @@ class DeepDrone {
     }
 
     startTelemetry() {
-        // Stop any existing telemetry first
         this.stopTelemetry();
-        this.updateTelemetry();
-        this.telemetryInterval = setInterval(() => this.updateTelemetry(), 3000);  // Reduced from 1s to 3s
     }
 
     stopTelemetry() {
@@ -363,20 +547,108 @@ class DeepDrone {
         }
     }
 
-    async updateTelemetry() {
-        try {
-            const response = await fetch('/api/drone/status');
-            const data = await response.json();
-
-            if (data.connected) {
-                this.telemMode.textContent = data.mode || '-';
-                this.telemArmed.textContent = data.armed ? 'Yes' : 'No';
-                this.telemAlt.textContent = data.altitude ? `${data.altitude.toFixed(1)}m` : '-';
-                this.telemBattery.textContent = data.battery ? `${data.battery}%` : '-';
-            }
-        } catch (error) {
-            console.error('Telemetry error:', error);
+    updateTelemetryFromPayload(data) {
+        if (!data) {
+            return;
         }
+
+        if (data.connected !== this.isDroneConnected) {
+            this.isDroneConnected = data.connected;
+            this.updateStatus(this.isAIConfigured, this.isDroneConnected);
+        }
+
+        if (!data.connected) {
+            this.telemMode.textContent = '-';
+            this.telemArmed.textContent = '-';
+            this.telemAlt.textContent = '-';
+            this.telemBattery.textContent = '-';
+            this.mapLat.textContent = '-';
+            this.mapLon.textContent = '-';
+            this.mapAlt.textContent = '-';
+            this.mapPath = [];
+            this.mapBase = null;
+            if (this.mapCanvas) {
+                const ctx = this.mapCanvas.getContext('2d');
+                ctx.clearRect(0, 0, this.mapCanvas.width, this.mapCanvas.height);
+            }
+            return;
+        }
+
+        this.telemMode.textContent = data.mode || '-';
+        this.telemArmed.textContent = data.armed ? 'Yes' : 'No';
+        this.telemAlt.textContent = data.altitude ? `${data.altitude.toFixed(1)}m` : '-';
+        this.telemBattery.textContent = data.battery ? `${data.battery}%` : '-';
+
+        if (data.gps) {
+            const lat = data.gps.lat;
+            const lon = data.gps.lon;
+            if (typeof lat === 'number' && typeof lon === 'number') {
+                this.updateMap(lat, lon, data.altitude || 0);
+            }
+        }
+    }
+
+    updateMap(lat, lon, alt) {
+        if (!this.mapCanvas) return;
+
+        const canvas = this.mapCanvas;
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        if (!this.mapBase) {
+            this.mapBase = { lat, lon };
+        }
+
+        this.mapLat.textContent = lat.toFixed(6);
+        this.mapLon.textContent = lon.toFixed(6);
+        this.mapAlt.textContent = alt.toFixed(1) + 'm';
+
+        this.mapPath.push({ lat, lon });
+        if (this.mapPath.length > 100) {
+            this.mapPath.shift();
+        }
+
+        const lats = this.mapPath.map(point => point.lat);
+        const lons = this.mapPath.map(point => point.lon);
+        const minLat = Math.min(...lats);
+        const maxLat = Math.max(...lats);
+        const minLon = Math.min(...lons);
+        const maxLon = Math.max(...lons);
+
+        const padding = 16;
+        const latRange = maxLat - minLat || 0.0001;
+        const lonRange = maxLon - minLon || 0.0001;
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = '#1f1f1f';
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.strokeStyle = '#3a3a3a';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(padding, padding, width - padding * 2, height - padding * 2);
+
+        ctx.beginPath();
+        this.mapPath.forEach((point, index) => {
+            const x = padding + ((point.lon - minLon) / lonRange) * (width - padding * 2);
+            const y = padding + ((maxLat - point.lat) / latRange) * (height - padding * 2);
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+        ctx.strokeStyle = '#10a37f';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        const last = this.mapPath[this.mapPath.length - 1];
+        const lastX = padding + ((last.lon - minLon) / lonRange) * (width - padding * 2);
+        const lastY = padding + ((maxLat - last.lat) / latRange) * (height - padding * 2);
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath();
+        ctx.arc(lastX, lastY, 4, 0, Math.PI * 2);
+        ctx.fill();
     }
 
     // Chat
@@ -543,6 +815,8 @@ class DeepDrone {
             } else if (data.type === 'user_message') {
                 // User message already shown, just for acknowledgment
                 console.log('✓ User message acknowledged');
+            } else if (data.type === 'telemetry') {
+                this.updateTelemetryFromPayload(data.content);
             }
         };
 
@@ -613,7 +887,6 @@ class DeepDrone {
             if (data.llm_configured) {
                 this.isAIConfigured = true;
                 this.sendBtn.disabled = false;
-                this.connectWebSocket();
             }
 
             if (data.drone_connected) {
@@ -622,6 +895,7 @@ class DeepDrone {
             }
 
             this.updateStatus(data.llm_configured, data.drone_connected);
+            this.connectWebSocket();
         } catch (error) {
             console.error('Health check failed:', error);
         }
